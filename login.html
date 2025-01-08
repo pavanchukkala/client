@@ -3,8 +3,96 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <title>Login</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #141e30, #243b55);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .login-container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      animation: slideIn 1.5s ease-out;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      font-weight: 600;
+      letter-spacing: 2px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    input {
+      width: 100%;
+      max-width: 300px;
+      padding: 10px 15px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 25px;
+      outline: none;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    input::placeholder {
+      color: #999;
+    }
+
+    button {
+      padding: 10px 30px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: #fff;
+      background: linear-gradient(90deg, #ff512f, #dd2476);
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 15px rgba(255, 81, 47, 0.6);
+    }
+
+    .error-message {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: #ff6b6b;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="login-container">
