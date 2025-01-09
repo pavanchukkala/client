@@ -12,53 +12,64 @@
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #1f1c2c, #928dab);
       color: #fff;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: start;
-      min-height: 100vh;
-      padding: 20px;
     }
 
-    .dashboard-container {
-      width: 100%;
-      max-width: 1200px;
-      margin: auto;
+    .navbar {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .navbar a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1rem;
+      margin: 0 10px;
+      transition: color 0.3s ease;
+    }
+
+    .navbar a:hover {
+      color: #e63946;
+    }
+
+    .content-container {
+      flex: 1;
       padding: 20px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(10px);
+      display: none;
+    }
+
+    .content-container.active {
+      display: block;
     }
 
     h1 {
-      font-size: 2.5rem;
-      text-align: center;
+      font-size: 2rem;
       margin-bottom: 20px;
     }
 
-    .section {
-      margin-bottom: 30px;
-    }
-
-    .banner {
+    .banner, .media-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px 20px;
+      padding: 15px;
       margin-bottom: 15px;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(255, 255, 255, 0.1);
       border-radius: 10px;
       box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-      color: #fff;
     }
 
-    .banner p {
+    .banner p, .media-item p {
       margin: 0;
       font-size: 1rem;
     }
 
-    .banner button {
+    button {
       padding: 8px 15px;
       font-size: 0.9rem;
       color: #fff;
@@ -69,105 +80,50 @@
       transition: background 0.3s ease;
     }
 
-    .banner button:hover {
+    button:hover {
       background: #c5303b;
     }
 
-    .upload-section {
-      text-align: center;
-    }
-
-    .upload-section input[type="file"] {
-      margin: 10px 0;
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-    }
-
-    .media-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px;
-      margin-bottom: 10px;
-      background: rgba(0, 0, 0, 0.5);
-      border-radius: 10px;
-    }
-
-    .media-item p {
-      margin: 0;
-      font-size: 1rem;
-    }
-
-    .media-item button {
-      padding: 8px 15px;
-      font-size: 0.9rem;
-      color: #fff;
-      background: #e63946;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .media-item button:hover {
-      background: #c5303b;
-    }
-
-    button#logout {
-      display: block;
-      margin: 20px auto;
+    #logout {
+      background: linear-gradient(90deg, #ff512f, #dd2476);
+      margin-top: 20px;
+      align-self: center;
       padding: 10px 20px;
       font-size: 1rem;
-      background: linear-gradient(90deg, #ff512f, #dd2476);
-      border: none;
       border-radius: 25px;
-      color: #fff;
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 8px 15px rgba(255, 81, 47, 0.6);
     }
 
-    button#logout:hover {
+    #logout:hover {
       transform: scale(1.05);
-      box-shadow: 0 8px 15px rgba(255, 81, 47, 0.6);
     }
   </style>
 </head>
 <body>
-  <div class="dashboard-container">
-    <h1>Owner Dashboard</h1>
-
-    <div class="section">
-      <h2>Contact Data</h2>
-      <div id="contactList">
-        <!-- Dynamically populated banners for contact data -->
-        <!-- Example:
-        <div class="banner">
-          <p>John Doe - johndoe@gmail.com</p>
-          <button>Delete</button>
-        </div>
-        -->
-      </div>
+  <div class="navbar">
+    <div>
+      <a href="#" id="navContactData">Contact Data</a>
+      <a href="#" id="navMediaManagement">Media Management</a>
     </div>
-
-    <div class="section">
-      <h2>Media Management</h2>
-      <div class="upload-section">
-        <input type="file" id="fileInput" />
-        <button id="uploadMedia">Upload</button>
-      </div>
-      <div id="mediaList">
-        <!-- Dynamically populated media items -->
-        <!-- Example:
-        <div class="media-item">
-          <p>Image1.jpg</p>
-          <button>Delete</button>
-        </div>
-        -->
-      </div>
-    </div>
-
     <button id="logout">Logout</button>
+  </div>
+
+  <div id="contactDataSection" class="content-container active">
+    <h1>Contact Data</h1>
+    <div id="contactList">
+      <!-- Contact banners will be dynamically loaded here -->
+    </div>
+  </div>
+
+  <div id="mediaManagementSection" class="content-container">
+    <h1>Media Management</h1>
+    <div class="upload-section">
+      <input type="file" id="fileInput" />
+      <button id="uploadMedia">Upload</button>
+    </div>
+    <div id="mediaList">
+      <!-- Media items will be dynamically loaded here -->
+    </div>
   </div>
 
   <script type="module" src="js/dashboard.js"></script>
