@@ -5,127 +5,100 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
-  <title>Dashboard</title>
+  <title>Owner Interface</title>
   <style>
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #1f1c2c, #928dab);
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
       color: #fff;
-      min-height: 100vh;
       display: flex;
-      flex-direction: column;
-    }
-
-    .navbar {
-      background: rgba(0, 0, 0, 0.8);
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
       align-items: center;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
     }
 
-    .navbar a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 1rem;
-      margin: 0 10px;
-      transition: color 0.3s ease;
-    }
-
-    .navbar a:hover {
-      color: #e63946;
-    }
-
-    .content-container {
-      flex: 1;
-      padding: 20px;
-      display: none;
-    }
-
-    .content-container.active {
-      display: block;
+    .welcome-container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      animation: fadeIn 2s ease-out;
     }
 
     h1 {
-      font-size: 2rem;
-      margin-bottom: 20px;
+      font-size: 3rem;
+      margin-bottom: 25px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-weight: 600;
     }
 
-    .banner, .media-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px;
-      margin-bottom: 15px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 35px;
+      line-height: 1.8;
     }
 
-    .banner p, .media-item p {
-      margin: 0;
-      font-size: 1rem;
-    }
-
-    button {
-      padding: 8px 15px;
-      font-size: 0.9rem;
+    .btn {
+      display: inline-block;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-transform: uppercase;
       color: #fff;
-      background: #e63946;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    button:hover {
-      background: #c5303b;
-    }
-
-    #logout {
       background: linear-gradient(90deg, #ff512f, #dd2476);
-      margin-top: 20px;
-      align-self: center;
-      padding: 10px 20px;
-      font-size: 1rem;
-      border-radius: 25px;
-      box-shadow: 0 8px 15px rgba(255, 81, 47, 0.6);
+      border: none;
+      border-radius: 50px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    #logout:hover {
-      transform: scale(1.05);
+    .btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 20px rgba(255, 81, 47, 0.7);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+      p {
+        font-size: 1.1rem;
+      }
+      .btn {
+        font-size: 1rem;
+        padding: 12px 25px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .welcome-container {
+        padding: 25px 15px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="navbar">
-    <div>
-      <a href="#" id="navContactData">Contact Data</a>
-      <a href="#" id="navMediaManagement">Media Management</a>
-    </div>
-    <button id="logout">Logout</button>
+  <div class="welcome-container">
+    <h1>Welcome to the Owner Interface</h1>
+    <p>Experience a secure and premium interface designed for seamless data management. Click below to proceed to the login page.</p>
+    <a href="login.html" class="btn">Login</a>
   </div>
-
-  <div id="contactDataSection" class="content-container active">
-    <h1>Contact Data</h1>
-    <div id="contactList">
-      <!-- Contact banners will be dynamically loaded here -->
-    </div>
-  </div>
-
-  <div id="mediaManagementSection" class="content-container">
-    <h1>Media Management</h1>
-    <div class="upload-section">
-      <input type="file" id="fileInput" />
-      <button id="uploadMedia">Upload</button>
-    </div>
-    <div id="mediaList">
-      <!-- Media items will be dynamically loaded here -->
-    </div>
-  </div>
-
-  <script type="module" src="js/dashboard.js"></script>
 </body>
 </html>
