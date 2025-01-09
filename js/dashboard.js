@@ -1,101 +1,101 @@
-// js/dashboard.js
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-import { getFirestore, collection, getDocs, deleteDoc, doc, addDoc } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, listAll, deleteObject } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-storage.js";
-
-// Firebase configuration
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
+import { getDatabase, ref, onValue, push, remove } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-storage.js";
+import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
+import { firebaseConfig } from "./firebase-config.js";
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const db = getDatabase(app);
 const storage = getStorage(app);
-
-// DOM elements
-const contactList = document.getElementById("contactList");
-const mediaList = document.getElementById("mediaList");
-const fileInput = document.getElementById("fileInput");
-const uploadMediaButton = document.getElementById("uploadMedia");
-const logoutButton = document.getElementById("logout");
-
-// Fetch and display contact data
-async function loadContacts() {
-  contactList.innerHTML = ""; // Clear existing content
-  const querySnapshot = await getDocs(collection(db, "contacts"));
-  querySnapshot.forEach((doc) => {
-    const contact = doc.data();
-    const contactBanner = document.createElement("div");
-    contactBanner.className = "banner";
-
-    const contactInfo = document.createElement("p");
-    contactInfo.textContent = `${contact.name} - ${contact.email}`;
-
-    const deleteButton = document.createElement("button");
-    deleteButton.textContent = "Delete";
-    deleteButton.addEventListener("click", async () => {
-      await deleteDoc(doc(db, "contacts", doc.id));
-      loadContacts();
-    });
-
-    contactBanner.appendChild(contactInfo);
-    contactBanner.appendChild(deleteButton);
-    contactList.appendChild(contactBanner);
-  });
-}
-
-// Fetch and display media items
-async function loadMedia() {
-  mediaList.innerHTML = ""; // Clear existing content
-  const mediaRef = ref(storage, "media/");
-  const mediaItems = await listAll(mediaRef);
-  mediaItems.items.forEach((itemRef) => {
-    const mediaItem = document.createElement("div");
-    mediaItem.className = "media-item";
-
-    const mediaName = document.createElement("p");
-    mediaName.textContent = itemRef.name;
-
-    const deleteButton = document.createElement("button");
-    deleteButton.textContent = "Delete";
-    deleteButton.addEventListener("click", async () => {
-      await deleteObject(itemRef);
-      loadMedia();
-    });
-
-    mediaItem.appendChild(mediaName);
-    mediaItem.appendChild(deleteButton);
-    mediaList.appendChild(mediaItem);
-  });
-}
-
-// Upload media file
-uploadMediaButton.addEventListener("click", async () => {
-  const file = fileInput.files[0];
-  if (file) {
-    const storageRef = ref(storage, `media/${file.name}`);
-    await uploadBytes(storageRef, file);
-    loadMedia();
-    fileInput.value = "";
-  } else {
-    alert("Please select a file to upload.");
-  }
-});
+const auth = getAuth(app);
 
 // Logout functionality
-logoutButton.addEventListener("click", () => {
-  // Add logout functionality here, e.g., clearing tokens or redirecting to login page
-  alert("You have logged out.");
-  window.location.href = "login.html";
+document.getElementById("logout").addEventListener("click", () => {
+  signOut(auth).then(() => {
+    alert("Logged out successfully.");
+    window.location.href = "login.html";
+  }).catch((error) => {
+    console.error("Error logging out:", error);
+  });
 });
 
-// Initialize dashboard
-loadContacts();
-loadMedia();
+// Fetch and display contact data
+const contactList = document.getElementById("contactList");
+const contactsRef = ref(db, "contacts"); // Ensure "contacts" node exists in Firebase
+
+onValue(contactsRef, (snapshot) => {
+  contactList.innerHTML = ""; // Clear the list before re-rendering
+  snapshot.forEach((childSnapshot) => {
+    const key = childSnapshot.key;
+    const data = childSnapshot.val();
+
+    // Create a banner for each contact
+    const banner = document.createElement("div");
+    banner.className = "banner";
+
+    const contactInfo = document.createElement("p");
+    contactInfo.textContent = `${data.name} - ${data.email}`;
+
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete";
+    deleteButton.addEventListener("click", () => {
+      if (confirm("Are you sure you want to delete this contact?")) {
+        remove(ref(db, `contacts/${key}`))
+          .then(() => alert("Contact deleted successfully."))
+          .catch((error) => console.error("Error deleting contact:", error));
+      }
+    });
+
+    banner.appendChild(contactInfo);
+    banner.appendChild(deleteButton);
+    contactList.appendChild(banner);
+  });
+});
+
+// Upload media functionality
+const fileInput = document.getElementById("fileInput");
+const uploadButton = document.getElementById("uploadMedia");
+const mediaList = document.getElementById("mediaList");
+
+uploadButton.addEventListener("click", () => {
+  const file = fileInput.files[0];
+  if (!file) {
+    alert("Please select a file to upload.");
+    return;
+  }
+
+  const fileRef = storageRef(storage, `media/${file.name}`);
+  uploadBytes(fileRef, file)
+    .then((snapshot) => {
+      return getDownloadURL(snapshot.ref);
+    })
+    .then((url) => {
+      // Add to the media list dynamically
+      const mediaItem = document.createElement("div");
+      mediaItem.className = "media-item";
+
+      const mediaName = document.createElement("p");
+      mediaName.textContent = file.name;
+
+      const deleteButton = document.createElement("button");
+      deleteButton.textContent = "Delete";
+      deleteButton.addEventListener("click", () => {
+        if (confirm("Are you sure you want to delete this file?")) {
+          deleteObject(fileRef)
+            .then(() => {
+              mediaItem.remove();
+              alert("File deleted successfully.");
+            })
+            .catch((error) => console.error("Error deleting file:", error));
+        }
+      });
+
+      mediaItem.appendChild(mediaName);
+      mediaItem.appendChild(deleteButton);
+      mediaList.appendChild(mediaItem);
+    })
+    .catch((error) => {
+      console.error("Error uploading file:", error);
+    });
+});
