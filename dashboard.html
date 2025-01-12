@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
-  <title>Dashboard</title>
+  <title>Owner Dashboard | OM Castings</title>
   <style>
     body {
       margin: 0;
@@ -66,49 +65,7 @@
       display: block;
     }
 
-    .banner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 20px;
-      margin-bottom: 15px;
-      background: rgba(0, 0, 0, 0.5);
-      border-radius: 10px;
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-      color: #fff;
-    }
-
-    .banner p {
-      margin: 0;
-      font-size: 1rem;
-    }
-
-    .banner button {
-      padding: 8px 15px;
-      font-size: 0.9rem;
-      color: #fff;
-      background: #e63946;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .banner button:hover {
-      background: #c5303b;
-    }
-
-    .upload-section {
-      text-align: center;
-    }
-
-    .upload-section input[type="file"] {
-      margin: 10px 0;
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
-    }
-
+    .contact-item,
     .media-item {
       display: flex;
       justify-content: space-between;
@@ -117,14 +74,10 @@
       margin-bottom: 10px;
       background: rgba(0, 0, 0, 0.5);
       border-radius: 10px;
+      color: #fff;
     }
 
-    .media-item p {
-      margin: 0;
-      font-size: 1rem;
-    }
-
-    .media-item button {
+    button.action {
       padding: 8px 15px;
       font-size: 0.9rem;
       color: #fff;
@@ -135,7 +88,7 @@
       transition: background 0.3s ease;
     }
 
-    .media-item button:hover {
+    button.action:hover {
       background: #c5303b;
     }
 
@@ -161,33 +114,134 @@
 <body>
   <div class="dashboard-container">
     <h1>Owner Dashboard</h1>
-
     <nav>
-      <a href="#" data-section="contact-section">Contact Details</a>
+      <a href="#" data-section="contact-section">Contact Management</a>
       <a href="#" data-section="media-section">Media Management</a>
     </nav>
 
+    <!-- Contact Section -->
     <div id="contact-section" class="section active">
       <h2>Contact Data</h2>
       <div id="contactList">
-        <!-- Dynamically populated banners for contact data -->
+        <!-- Dynamic contact entries from Firebase -->
       </div>
     </div>
 
+    <!-- Media Section -->
     <div id="media-section" class="section">
       <h2>Media Management</h2>
       <div class="upload-section">
         <input type="file" id="fileInput" />
-        <button id="uploadMedia">Upload</button>
+        <button id="uploadMedia">Upload Media</button>
       </div>
       <div id="mediaList">
-        <!-- Dynamically populated media items -->
+        <!-- Dynamic media items from Firebase -->
       </div>
     </div>
 
     <button id="logout">Logout</button>
   </div>
 
-  <script type="module" src="js/dashboard.js"></script>
+  <script type="module">
+    // Import Firebase and initialize your project
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      deleteDoc,
+      doc,
+    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    import {
+      getStorage,
+      ref,
+      uploadBytes,
+      getDownloadURL,
+      listAll,
+    } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";
+
+    const firebaseConfig = {
+      // Your Firebase configuration
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    // Manage Navigation
+    const navLinks = document.querySelectorAll("nav a");
+    const sections = document.querySelectorAll(".section");
+    navLinks.forEach((link) =>
+      link.addEventListener("click", () => {
+        sections.forEach((section) => section.classList.remove("active"));
+        document
+          .getElementById(link.dataset.section)
+          .classList.add("active");
+      })
+    );
+
+    // Contact Management
+    const contactList = document.getElementById("contactList");
+    const renderContacts = async () => {
+      const querySnapshot = await getDocs(collection(db, "contacts"));
+      contactList.innerHTML = "";
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const contactItem = document.createElement("div");
+        contactItem.className = "contact-item";
+        contactItem.innerHTML = `
+          <p>${data.name} - ${data.email}</p>
+          <button class="action" onclick="deleteContact('${doc.id}')">Delete</button>
+        `;
+        contactList.appendChild(contactItem);
+      });
+    };
+
+    const deleteContact = async (id) => {
+      await deleteDoc(doc(db, "contacts", id));
+      renderContacts();
+    };
+
+    // Media Management
+    const fileInput = document.getElementById("fileInput");
+    const mediaList = document.getElementById("mediaList");
+
+    const uploadMedia = async () => {
+      const file = fileInput.files[0];
+      if (!file) return alert("Select a file first!");
+      const storageRef = ref(storage, `media/${file.name}`);
+      await uploadBytes(storageRef, file);
+      alert("File uploaded successfully!");
+      renderMedia();
+    };
+
+    document.getElementById("uploadMedia").addEventListener("click", uploadMedia);
+
+    const renderMedia = async () => {
+      const mediaRef = ref(storage, "media/");
+      const files = await listAll(mediaRef);
+      mediaList.innerHTML = "";
+      files.items.forEach(async (itemRef) => {
+        const url = await getDownloadURL(itemRef);
+        const mediaItem = document.createElement("div");
+        mediaItem.className = "media-item";
+        mediaItem.innerHTML = `
+          <p>${itemRef.name}</p>
+          <a href="${url}" target="_blank" class="action">View</a>
+        `;
+        mediaList.appendChild(mediaItem);
+      });
+    };
+
+    // Logout Button
+    document.getElementById("logout").addEventListener("click", () => {
+      alert("Logged out successfully!");
+      location.reload();
+    });
+
+    // Initial Rendering
+    renderContacts();
+    renderMedia();
+  </script>
 </body>
 </html>
