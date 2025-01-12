@@ -92,7 +92,7 @@
     .contact-list {
       margin-top: 20px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 20px;
     }
 
@@ -109,6 +109,11 @@
     .contact-item p {
       margin: 0;
       font-size: 1rem;
+    }
+
+    .contact-item p label {
+      font-weight: 600;
+      color: #a3e635;
     }
 
     .contact-item button {
@@ -212,16 +217,16 @@
       <div id="contactList" class="contact-list">
         <!-- Example dynamic content -->
         <div class="contact-item">
-          <p><strong>Name:</strong> John Doe</p>
-          <p><strong>Email:</strong> johndoe@example.com</p>
-          <p><strong>Message:</strong> Looking forward to discussing a project.</p>
+          <p><label>Name:</label> John Doe</p>
+          <p><label>Email:</label> johndoe@example.com</p>
+          <p><label>Message:</label> Looking forward to discussing a project.</p>
           <button>Reply</button>
           <button>Delete</button>
         </div>
         <div class="contact-item">
-          <p><strong>Name:</strong> Jane Smith</p>
-          <p><strong>Email:</strong> janesmith@example.com</p>
-          <p><strong>Message:</strong> Please share your product catalog.</p>
+          <p><label>Name:</label> Jane Smith</p>
+          <p><label>Email:</label> janesmith@example.com</p>
+          <p><label>Message:</label> Please share your product catalog.</p>
           <button>Reply</button>
           <button>Delete</button>
         </div>
