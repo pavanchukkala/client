@@ -104,6 +104,7 @@
       background: rgba(0, 0, 0, 0.6);
       border-radius: 5px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      position: relative;
     }
 
     .contact-item p {
@@ -117,7 +118,6 @@
     }
 
     .contact-item button {
-      align-self: flex-start;
       padding: 8px 15px;
       font-size: 0.9rem;
       color: #fff;
@@ -126,10 +126,26 @@
       border-radius: 5px;
       cursor: pointer;
       transition: background 0.3s ease;
+      margin-right: 10px;
     }
 
     .contact-item button:hover {
       background: #15803d;
+    }
+
+    .contact-item .delete-msg {
+      position: absolute;
+      top: -25px;
+      left: 10px;
+      font-size: 0.9rem;
+      color: #f87171;
+    }
+
+    .no-messages {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #94a3b8;
+      margin-top: 20px;
     }
 
     .media-list {
@@ -230,21 +246,62 @@
           <button>Reply</button>
           <button>Delete</button>
         </div>
+        <p class="no-messages">No recent messages available.</p>
       </div>
     </div>
 
     <div id="media-section" class="section">
       <h2>Media Management</h2>
       <div class="upload-section">
-        <input type="file" id="fileInput" />
-        <button id="uploadMedia">Upload</button>
+        <input type="file"
+        accept="image/*,video/*" multiple>
+        <button>Upload Media</button>
       </div>
       <div id="mediaList" class="media-list">
-        <!-- Dynamic content will populate here -->
+        <!-- Example dynamic content -->
+        <div class="media-item">
+          <p>File Name: brochure.jpg</p>
+          <button>Delete</button>
+        </div>
+        <div class="media-item">
+          <p>File Name: product_video.mp4</p>
+          <button>Delete</button>
+        </div>
+        <p class="no-messages">No media files uploaded yet.</p>
       </div>
     </div>
   </div>
 
-  <script type="module" src="js/dashboard.js"></script>
+  <script>
+    const sections = document.querySelectorAll('.section');
+    const navLinks = document.querySelectorAll('nav a');
+    const logoutButton = document.getElementById('logout');
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetSection = link.getAttribute('data-section');
+        sections.forEach(section => {
+          if (section.id === targetSection) {
+            section.classList.add('active');
+          } else {
+            section.classList.remove('active');
+          }
+        });
+      });
+    });
+
+    logoutButton.addEventListener('click', () => {
+      if (confirm('Are you sure you want to logout?')) {
+        // Handle logout logic
+        alert('Logged out successfully!');
+      }
+    });
+
+    // Placeholder for dynamic functionality (e.g., fetching contacts and media)
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('Dashboard loaded. Implement API integrations here.');
+    });
+  </script>
 </body>
 </html>
