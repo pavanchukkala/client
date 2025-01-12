@@ -3,15 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <title>Owner Interface</title>
   <style>
     body {
       margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
-      color: #fff;
+      font-family: 'Roboto', sans-serif;
+      background: radial-gradient(circle, #0f2027, #203a43, #2c5364);
+      color: #e0e6ed;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -21,49 +20,52 @@
 
     .welcome-container {
       text-align: center;
-      background: rgba(255, 255, 255, 0.2);
-      padding: 40px 30px;
-      border-radius: 20px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(10px);
-      animation: fadeIn 2s ease-out;
+      background: rgba(15, 32, 39, 0.9);
+      padding: 50px 40px;
+      border-radius: 15px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      animation: slideIn 1.5s ease-out;
     }
 
     h1 {
-      font-size: 3rem;
-      margin-bottom: 25px;
+      font-size: 2.8rem;
+      margin-bottom: 20px;
       text-transform: uppercase;
-      letter-spacing: 3px;
-      font-weight: 600;
+      letter-spacing: 2px;
+      font-weight: 700;
+      color: #5ed1b9;
     }
 
     p {
-      font-size: 1.2rem;
-      margin-bottom: 35px;
-      line-height: 1.8;
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      line-height: 1.6;
+      color: #d0d7df;
     }
 
     .btn {
       display: inline-block;
-      padding: 15px 30px;
-      font-size: 1.2rem;
-      font-weight: 600;
+      padding: 15px 35px;
+      font-size: 1.1rem;
+      font-weight: 500;
       text-transform: uppercase;
       color: #fff;
-      background: linear-gradient(90deg, #ff512f, #dd2476);
+      background: linear-gradient(90deg, #1fa2ff, #12d8fa, #a6ffcb);
       border: none;
-      border-radius: 50px;
+      border-radius: 30px;
       text-decoration: none;
       cursor: pointer;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 8px 20px rgba(255, 81, 47, 0.7);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(18, 216, 250, 0.5);
     }
 
-    @keyframes fadeIn {
+    @keyframes slideIn {
       from {
         opacity: 0;
         transform: translateY(20px);
@@ -76,29 +78,29 @@
 
     @media (max-width: 768px) {
       h1 {
-        font-size: 2.5rem;
+        font-size: 2.4rem;
       }
       p {
-        font-size: 1.1rem;
+        font-size: 1rem;
       }
       .btn {
         font-size: 1rem;
-        padding: 12px 25px;
+        padding: 12px 30px;
       }
     }
 
     @media (max-width: 480px) {
       .welcome-container {
-        padding: 25px 15px;
+        padding: 30px 20px;
       }
     }
   </style>
 </head>
 <body>
   <div class="welcome-container">
-    <h1>Welcome to the Owner Interface</h1>
-    <p>Experience a secure and premium interface designed for seamless data management. Click below to proceed to the login page.</p>
-    <a href="login.html" class="btn">Login</a>
+    <h1>Secure Interface</h1>
+    <p>Your trusted platform for managing data with the highest level of confidentiality and protection. Proceed with confidence.</p>
+    <a href="login.html" class="btn">Proceed to Login</a>
   </div>
 </body>
 </html>
