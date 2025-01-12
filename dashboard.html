@@ -89,14 +89,52 @@
       display: block;
     }
 
-    .contact-list, .media-list {
+    .contact-list {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .contact-item {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .contact-item p {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .contact-item button {
+      align-self: flex-start;
+      padding: 8px 15px;
+      font-size: 0.9rem;
+      color: #fff;
+      background: #22c55e;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .contact-item button:hover {
+      background: #15803d;
+    }
+
+    .media-list {
       margin-top: 20px;
       display: flex;
       flex-direction: column;
       gap: 15px;
     }
 
-    .contact-item, .media-item {
+    .media-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -106,11 +144,11 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
-    .contact-item p, .media-item p {
+    .media-item p {
       margin: 0;
     }
 
-    .contact-item button, .media-item button {
+    .media-item button {
       padding: 8px 15px;
       font-size: 0.9rem;
       color: #fff;
@@ -121,7 +159,7 @@
       transition: background 0.3s ease;
     }
 
-    .contact-item button:hover, .media-item button:hover {
+    .media-item button:hover {
       background: #c5303b;
     }
 
@@ -172,7 +210,21 @@
     <div id="contact-section" class="section active">
       <h2>Contact Management</h2>
       <div id="contactList" class="contact-list">
-        <!-- Dynamic content will populate here -->
+        <!-- Example dynamic content -->
+        <div class="contact-item">
+          <p><strong>Name:</strong> John Doe</p>
+          <p><strong>Email:</strong> johndoe@example.com</p>
+          <p><strong>Message:</strong> Looking forward to discussing a project.</p>
+          <button>Reply</button>
+          <button>Delete</button>
+        </div>
+        <div class="contact-item">
+          <p><strong>Name:</strong> Jane Smith</p>
+          <p><strong>Email:</strong> janesmith@example.com</p>
+          <p><strong>Message:</strong> Please share your product catalog.</p>
+          <button>Reply</button>
+          <button>Delete</button>
+        </div>
       </div>
     </div>
 
