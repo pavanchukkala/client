@@ -42,19 +42,27 @@ logoutBtn.addEventListener('click', async () => {
 async function fetchContactData() {
   contactList.innerHTML = '';
   const querySnapshot = await getDocs(collection(db, 'contacts'));
+  if (querySnapshot.empty) {
+    contactList.innerHTML = '<p class="no-messages">No recent messages available.</p>';
+    return;
+  }
+
   querySnapshot.forEach((doc) => {
     const data = doc.data();
-    const banner = document.createElement('div');
-    banner.className = 'banner';
-    banner.innerHTML = `
-      <p>${data.name} - ${data.email}<br>${data.message}</p>
-      <button data-id="${doc.id}">Delete</button>
+    const contactItem = document.createElement('div');
+    contactItem.className = 'contact-item';
+    contactItem.innerHTML = `
+      <p><label>Name:</label> ${data.name}</p>
+      <p><label>Email:</label> ${data.email}</p>
+      <p><label>Message:</label> ${data.message}</p>
+      <button class="reply">Reply</button>
+      <button class="delete" data-id="${doc.id}">Delete</button>
     `;
-    contactList.appendChild(banner);
+    contactList.appendChild(contactItem);
   });
 
-  // Delete Contact Data
-  document.querySelectorAll('#contactList button').forEach((button) => {
+  // Delete Contact
+  document.querySelectorAll('.contact-item .delete').forEach((button) => {
     button.addEventListener('click', async () => {
       const id = button.dataset.id;
       await deleteDoc(doc(db, 'contacts', id));
@@ -68,19 +76,25 @@ async function fetchMediaFiles() {
   mediaList.innerHTML = '';
   const listRef = ref(storage, 'media/');
   const res = await listAll(listRef);
+
+  if (res.items.length === 0) {
+    mediaList.innerHTML = '<p class="no-messages">No media files uploaded yet.</p>';
+    return;
+  }
+
   res.items.forEach(async (itemRef) => {
     const url = await getDownloadURL(itemRef);
     const mediaItem = document.createElement('div');
     mediaItem.className = 'media-item';
     mediaItem.innerHTML = `
-      <p>${itemRef.name}</p>
-      <button data-path="${itemRef.fullPath}">Delete</button>
+      <p>File Name: ${itemRef.name}</p>
+      <button class="delete" data-path="${itemRef.fullPath}">Delete</button>
     `;
     mediaList.appendChild(mediaItem);
   });
 
-  // Delete Media Files
-  document.querySelectorAll('#mediaList button').forEach((button) => {
+  // Delete Media
+  document.querySelectorAll('.media-item .delete').forEach((button) => {
     button.addEventListener('click', async () => {
       const path = button.dataset.path;
       const fileRef = ref(storage, path);
@@ -92,21 +106,23 @@ async function fetchMediaFiles() {
 
 // Upload Media File
 uploadMediaBtn.addEventListener('click', () => {
-  const file = fileInput.files[0];
-  if (!file) return alert('Please select a file.');
+  const files = fileInput.files;
+  if (!files.length) return alert('Please select files.');
 
-  const fileRef = ref(storage, `media/${file.name}`);
-  const uploadTask = uploadBytesResumable(fileRef, file);
+  Array.from(files).forEach((file) => {
+    const fileRef = ref(storage, `media/${file.name}`);
+    const uploadTask = uploadBytesResumable(fileRef, file);
 
-  uploadTask.on(
-    'state_changed',
-    null,
-    (error) => alert(`Error: ${error.message}`),
-    () => {
-      alert('File uploaded successfully!');
-      fetchMediaFiles();
-    }
-  );
+    uploadTask.on(
+      'state_changed',
+      null,
+      (error) => alert(`Error: ${error.message}`),
+      async () => {
+        alert(`File "${file.name}" uploaded successfully!`);
+        fetchMediaFiles();
+      }
+    );
+  });
 });
 
 // Initial Fetch
