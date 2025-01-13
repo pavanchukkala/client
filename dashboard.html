@@ -3,305 +3,270 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <title>Owner Dashboard | OM Castings</title>
+  <title>Om Castings</title>
   <style>
-    body {
+    /* General Reset */
+    * {
       margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #1e293b, #374151);
-      color: #fff;
-      min-height: 100vh;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Arial', sans-serif;
+    }
+
+    body {
+      background-color: #0e0e0e;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      position: relative;
+      height: 100vh;
       display: flex;
       flex-direction: column;
-    }
-
-    .dashboard-container {
-      width: 100%;
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 20px;
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 8px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .header h1 {
-      font-size: 1.8rem;
-      font-weight: 600;
-    }
-
-    .header button {
-      padding: 10px 20px;
-      font-size: 1rem;
-      font-weight: 500;
-      color: #fff;
-      background: linear-gradient(90deg, #e11d48, #be123c);
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .header button:hover {
-      background: linear-gradient(90deg, #be123c, #9f1239);
-    }
-
-    nav {
-      display: flex;
       justify-content: center;
-      gap: 20px;
+      align-items: center;
+      text-align: center;
+      background: linear-gradient(to bottom, #1f1f1f, #3a3a3a);
+      color: #ffffff;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1;
+    }
+
+    .hero-title {
+      font-size: 3rem;
+      font-weight: bold;
+      z-index: 2;
+    }
+
+    .hero-subtitle {
+      font-size: 1.5rem;
+      margin-top: 10px;
+      z-index: 2;
+    }
+
+    .hero-buttons {
+      margin-top: 20px;
+      z-index: 2;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background-color: #f57c00;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background-color: #ff9800;
+    }
+
+    .btn-secondary {
+      background-color: #4caf50;
+      color: #fff;
+    }
+
+    .btn-secondary:hover {
+      background-color: #81c784;
+    }
+
+    /* Services Section */
+    .services-section {
+      padding: 50px 20px;
+      background-color: #121212;
+      text-align: center;
+    }
+
+    .services-section h2 {
+      font-size: 2.5rem;
       margin-bottom: 30px;
     }
 
-    nav a {
-      text-decoration: none;
-      color: #fff;
-      font-size: 1rem;
+    .service-card {
+      display: inline-block;
+      width: 300px;
+      margin: 15px;
+      background: #1f1f1f;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .service-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .service-card h3 {
+      font-size: 1.5rem;
+      padding: 15px;
+      background: #2a2a2a;
+      color: #f57c00;
+    }
+
+    .service-card p {
       padding: 10px 15px;
-      border-radius: 25px;
-      background: linear-gradient(90deg, #2563eb, #1e40af);
-      transition: transform 0.3s ease, background 0.3s ease;
-    }
-
-    nav a:hover {
-      transform: scale(1.1);
-      background: linear-gradient(90deg, #1e40af, #2563eb);
-    }
-
-    .section {
-      display: none;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .section.active {
-      display: block;
-    }
-
-    .contact-list {
-      margin-top: 20px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-    }
-
-    .contact-item {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding: 15px;
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      position: relative;
-    }
-
-    .contact-item p {
-      margin: 0;
+      color: #ccc;
       font-size: 1rem;
     }
 
-    .contact-item p label {
-      font-weight: 600;
-      color: #a3e635;
+    /* Contact Form Section */
+    .contact-section {
+      padding: 50px 20px;
+      background-color: #1a1a1a;
     }
 
-    .contact-item button {
-      padding: 8px 15px;
-      font-size: 0.9rem;
-      color: #fff;
-      background: #22c55e;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-      margin-right: 10px;
-    }
-
-    .contact-item button:hover {
-      background: #15803d;
-    }
-
-    .contact-item .delete-msg {
-      position: absolute;
-      top: -25px;
-      left: 10px;
-      font-size: 0.9rem;
-      color: #f87171;
-    }
-
-    .no-messages {
+    .contact-section h2 {
+      font-size: 2.5rem;
       text-align: center;
-      font-size: 1.2rem;
-      color: #94a3b8;
-      margin-top: 20px;
+      margin-bottom: 20px;
     }
 
-    .media-list {
-      margin-top: 20px;
+    .contact-form {
+      max-width: 500px;
+      margin: 0 auto;
       display: flex;
       flex-direction: column;
       gap: 15px;
     }
 
-    .media-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px;
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    }
-
-    .media-item p {
-      margin: 0;
-    }
-
-    .media-item button {
-      padding: 8px 15px;
-      font-size: 0.9rem;
-      color: #fff;
-      background: #e63946;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .media-item button:hover {
-      background: #c5303b;
-    }
-
-    .upload-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .upload-section input[type="file"] {
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
       padding: 10px;
-      border: none;
-      border-radius: 5px;
-      background: rgba(255, 255, 255, 0.8);
-      color: #1e293b;
-    }
-
-    .upload-section button {
-      padding: 10px 20px;
       font-size: 1rem;
-      font-weight: 500;
-      color: #fff;
-      background: linear-gradient(90deg, #22c55e, #16a34a);
-      border: none;
+      border: 1px solid #333;
       border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s ease;
+      background-color: #121212;
+      color: #fff;
     }
 
-    .upload-section button:hover {
-      background: linear-gradient(90deg, #16a34a, #15803d);
+    .contact-form button {
+      padding: 10px 15px;
+      font-size: 1.1rem;
+      background-color: #f57c00;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .contact-form button:hover {
+      background-color: #ff9800;
+    }
+
+    /* Footer Section */
+    .footer {
+      padding: 20px;
+      background-color: #0e0e0e;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+
+    .footer a {
+      color: #f57c00;
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
-  <div class="dashboard-container">
-    <div class="header">
-      <h1>Welcome to OM Castings Dashboard</h1>
-      <button id="logout">Logout</button>
-    </div>
-
-    <nav>
-      <a href="#" data-section="contact-section">Contact Management</a>
-      <a href="#" data-section="media-section">Media Management</a>
-    </nav>
-
-    <div id="contact-section" class="section active">
-      <h2>Contact Management</h2>
-      <div id="contactList" class="contact-list">
-        <!-- Example dynamic content -->
-        <div class="contact-item">
-          <p><label>Name:</label> John Doe</p>
-          <p><label>Email:</label> johndoe@example.com</p>
-          <p><label>Message:</label> Looking forward to discussing a project.</p>
-          <button>Reply</button>
-          <button>Delete</button>
-        </div>
-        <div class="contact-item">
-          <p><label>Name:</label> Jane Smith</p>
-          <p><label>Email:</label> janesmith@example.com</p>
-          <p><label>Message:</label> Please share your product catalog.</p>
-          <button>Reply</button>
-          <button>Delete</button>
-        </div>
-        <p class="no-messages">No recent messages available.</p>
-      </div>
-    </div>
-
-    <div id="media-section" class="section">
-      <h2>Media Management</h2>
-      <div class="upload-section">
-        <input type="file"
-        accept="image/*,video/*" multiple>
-        <button>Upload Media</button>
-      </div>
-      <div id="mediaList" class="media-list">
-        <!-- Example dynamic content -->
-        <div class="media-item">
-          <p>File Name: brochure.jpg</p>
-          <button>Delete</button>
-        </div>
-        <div class="media-item">
-          <p>File Name: product_video.mp4</p>
-          <button>Delete</button>
-        </div>
-        <p class="no-messages">No media files uploaded yet.</p>
-      </div>
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-overlay"></div>
+    <h1 class="hero-title">Shaping the Future of Casting</h1>
+    <p class="hero-subtitle">High-Quality Excavator Bucket Teeth, Delivered Worldwide</p>
+    <div class="hero-buttons">
+      <button class="btn-primary">Explore Products</button>
+      <button class="btn-secondary">Get a Quote</button>
     </div>
   </div>
 
-  <script>
-    const sections = document.querySelectorAll('.section');
-    const navLinks = document.querySelectorAll('nav a');
-    const logoutButton = document.getElementById('logout');
+  <!-- Services Section -->
+  <div class="services-section">
+    <h2>Our Services</h2>
+    <div id="services-container"></div>
+  </div>
 
-    navLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetSection = link.getAttribute('data-section');
-        sections.forEach(section => {
-          if (section.id === targetSection) {
-            section.classList.add('active');
-          } else {
-            section.classList.remove('active');
-          }
-        });
+  <!-- Contact Section -->
+  <div class="contact-section">
+    <h2>Contact Us</h2>
+    <form class="contact-form">
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <textarea rows="5" placeholder="Your Message" required></textarea>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>© 2025 Om Castings. All rights reserved. <a href="#">Privacy Policy</a></p>
+  </div>
+
+  <!-- Firebase -->
+  <script type="module">
+    // Firebase config & initialization
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+    import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAofc3mQez-sDrvpZNsoOanaLjeEr3SSag",
+      authDomain: "om-new-5d333.firebaseapp.com",
+      projectId: "om-new-5d333",
+      storageBucket: "om-new-5d333.appspot.com",
+      messagingSenderId: "115867801200",
+      appId: "1:115867801200:web:0a0128f496bdd8264586b5",
+      measurementId: "G-WLQWC3702E"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    async function fetchServices() {
+      const servicesRef = collection(db, "services");
+      const servicesSnapshot = await getDocs(servicesRef);
+      const servicesContainer = document.getElementById("services-container");
+
+      servicesSnapshot.forEach(async (doc) => {
+        const serviceData = doc.data();
+        const imageUrl = await getDownloadURL(ref(storage, serviceData.imagePath));
+
+        const serviceCard = `
+          <div class="service-card">
+            <img src="${imageUrl}" alt="${serviceData.title}">
+            <h3>${serviceData.title}</h3>
+            <p>${serviceData.description}</p>
+          </div>
+        `;
+
+        servicesContainer.innerHTML += serviceCard;
       });
-    });
+    }
 
-    logoutButton.addEventListener('click', () => {
-      if (confirm('Are you sure you want to logout?')) {
-        // Handle logout logic
-        alert('Logged out successfully!');
-      }
-    });
-
-    // Placeholder for dynamic functionality (e.g., fetching contacts and media)
-    document.addEventListener('DOMContentLoaded', () => {
-      console.log('Dashboard loaded. Implement API integrations here.');
-    });
+    // Call function to fetch and render services
+    fetchServices();
   </script>
 </body>
 </html>
